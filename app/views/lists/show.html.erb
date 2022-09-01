@@ -1,2 +1,10 @@
-<h1>some list?</h1>
-<%= @list.name %>
+<h1><%= @list.name.capitalize %></h1>
+<ul>
+  <% @list.movies.each do |movie| %>
+    <% bookmark = Bookmark.find_by(list: @list, movie: movie) %>
+    <li><%= movie.title %><br>Comment: <%= bookmark.comment %></li>
+    <%= link_to "delete", bookmark_path(bookmark), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove #{movie.title} from #{@list.name}"} %>
+  <% end %>
+</ul>
+<%= link_to "Add a movie", new_list_bookmark_path(@list) %>
+<%= link_to "Return to lists", lists_path %>
